@@ -1,13 +1,7 @@
-import inquirer from "inquirer";
-import qr from 'qr-image';
-import fs from 'fs'
-inquirer.prompt([
-    {
-        message: 'Type in your url',
-        name: 'url'
-    }
-]).then((answers) => {
-    const url = answers.url;
-    const qr_svg = qr.image(url);
-    qr_svg.pipe(fs.createWriteStream('qr_image.png'))
-}).catch(err => console.log(err))
+import express from 'express';
+const app = express();
+
+app.listen(3000, (res, req) => {
+    console.log('Server is running on port 3000');
+    console.log(res, req);
+})
