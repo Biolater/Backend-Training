@@ -1,9 +1,15 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+import morgan from 'morgan';
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+const logger = (req, res, next) => {
+  console.log('Request method', req.method);
+  console.log('Requested url', req.url);
+  next();
+}
+
+app.use(logger);
 
 app.get('/', (req, res) => {
   res.send('<h1>YOOO</h1>')
