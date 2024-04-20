@@ -1,24 +1,32 @@
 import express from 'express';
-import morgan from 'morgan';
-const app = express();
-const port = 3000;
+import bodyParser from 'body-parser';
+import { dirname } from 'path'
+import { fileURLToPath } from 'url';
 
-const logger = (req, res, next) => {
-  console.log('Request method', req.method);
-  console.log('Requested url', req.url);
-  next();
+const ___dirname = dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+let bandname = '';
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+function bandNameGenerator(req, res, next) {
+    console.log(req.body);
+    bandname = req.body['street'] + req.body['pet'];
+    next();
 }
 
-app.use(logger);
+app.use(bandNameGenerator);
 
 app.get('/', (req, res) => {
-  res.send('<h1>YOOO</h1>')
-});
+    res.sendFile(___dirname + '/index.html');
+})
 
 app.post('/submit', (req, res) => {
-  console.log(req.body)
-});
+    res.send(`<h1>Your band name is ${bandname}</h1>`)
+})
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-});
+
+app.listen(3000, () => {
+    console.log('Server listening on port 3000');
+})
